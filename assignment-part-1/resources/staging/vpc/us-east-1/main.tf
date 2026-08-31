@@ -8,5 +8,4 @@ module "vpc" {
   db_subnet_cidrs = var.vpc[count.index].db_subnet_cidrs
   name = var.vpc[count.index].name
   environment = var.vpc[count.index].environment
-  cost_center = var.vpc[count.index].cost_center
 }

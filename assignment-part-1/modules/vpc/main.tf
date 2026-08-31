@@ -10,7 +10,7 @@ locals {
   )
 }
 
-# ------- VPC --------
+
 resource "aws_vpc" "main" {
   cidr_block = var.vpc_cidr_block
   region     = var.region
@@ -20,7 +20,7 @@ resource "aws_vpc" "main" {
   }
 }
 
-# ------ Public Subnets -------------
+
 resource "aws_subnet" "public_subnet" {
   count                   = length(var.public_subnet_cidrs)
   cidr_block              = var.public_subnet_cidrs[count.index]
@@ -33,7 +33,7 @@ resource "aws_subnet" "public_subnet" {
   }
 }
 
-# ------- Private Subnets for Application -------------
+
 resource "aws_subnet" "application_subnet" {
   count             = length(var.application_subnet_cidrs)
   cidr_block        = var.application_subnet_cidrs[count.index]
@@ -46,7 +46,7 @@ resource "aws_subnet" "application_subnet" {
   }
 }
 
-# ------- Private Subnets for Database -------------
+
 resource "aws_subnet" "db_private_subnet" {
   count             = length(var.db_subnet_cidrs)
   cidr_block        = var.db_subnet_cidrs[count.index]
@@ -59,7 +59,7 @@ resource "aws_subnet" "db_private_subnet" {
   }
 }
 
-# ------- Internet Gateway -------------
+
 resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.main.id
   region = var.region
@@ -69,7 +69,7 @@ resource "aws_internet_gateway" "gw" {
   }
 }
 
-# -------- Public Route Table --------
+
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
   region = var.region
@@ -93,7 +93,7 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.public.id
 }
 
-# ------ Elastic IP for NAT Gateway --------
+
 resource "aws_eip" "nat" {
   domain = "vpc"
   tags = {
@@ -102,7 +102,7 @@ resource "aws_eip" "nat" {
   }
 }
 
-# -------- NAT Gateway ---------
+
 resource "aws_nat_gateway" "main" {
   allocation_id = aws_eip.nat.id
   subnet_id     = aws_subnet.public[0].id
@@ -115,7 +115,6 @@ resource "aws_nat_gateway" "main" {
   ]
 }
 
-# ------- Private Route Table for Application Subnets --------
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.main.id
   region = var.region
@@ -138,7 +137,6 @@ resource "aws_route_table_association" "private" {
 }
 
 
-# ------- DB Route Table --------
 resource "aws_route_table" "database" {
   vpc_id = aws_vpc.main.id
 
