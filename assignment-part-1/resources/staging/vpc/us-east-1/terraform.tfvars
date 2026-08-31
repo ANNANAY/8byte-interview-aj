@@ -7,7 +7,6 @@ vpc = [
     # Tags
     environment = "Staging"
     name = "8byte-terraform-vpc-assignment-aj"
-    cost_center = "12345"
     }
 ]
 

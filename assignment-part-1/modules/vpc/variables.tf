@@ -31,7 +31,3 @@ variable "name" {
 variable "environment" {
   type = string
 }
-
-variable "cost_center" {
-  type = string
-}
